@@ -1,0 +1,80 @@
+create table artist
+(
+    id   int auto_increment,
+    name varchar(30) not null,
+    type varchar(30) not null,
+    constraint Artist_Name_uindex
+        unique (name),
+    constraint Artist_id_uindex
+        unique (id)
+);
+
+alter table artist
+    add primary key (id);
+
+create table concerts
+(
+    id      int auto_increment,
+    name    varchar(30) not null,
+    `limit` int         not null,
+    time    timestamp   not null,
+    constraint concerts_id_uindex
+        unique (id),
+    constraint concerts_name_uindex
+        unique (name)
+);
+
+alter table concerts
+    add primary key (id);
+
+create table concertartists
+(
+    id        int auto_increment,
+    concertId int not null,
+    artistId  int not null,
+    constraint concertArtists_id_uindex
+        unique (id),
+    constraint concertArtists_artist_id_fk
+        foreign key (artistId) references artist (id)
+            on update cascade on delete cascade,
+    constraint concertArtists_concerts_id_fk
+        foreign key (concertId) references concerts (id)
+            on update cascade on delete cascade
+);
+
+alter table concertartists
+    add primary key (id);
+
+create table ticket
+(
+    id        int auto_increment,
+    price     int         not null,
+    concertId int         not null,
+    name      varchar(30) not null,
+    constraint ticket_id_uindex
+        unique (id),
+    constraint ticket_concerts_id_fk
+        foreign key (concertId) references concerts (id)
+            on update cascade on delete cascade
+);
+
+alter table ticket
+    add primary key (id);
+
+create table user
+(
+    id       int auto_increment,
+    username varchar(30)  not null,
+    password varchar(100) not null,
+    isAdmin  tinyint(1)   not null,
+    constraint cashier_Password_uindex
+        unique (password),
+    constraint cashier_Username_uindex
+        unique (username),
+    constraint cashier_id_uindex
+        unique (id)
+);
+
+alter table user
+    add primary key (id);
+
